@@ -1,15 +1,20 @@
-import { useEffect, useMemo } from 'react';
-// CAMBIO: Importamos el nuevo hook
+import React, { useEffect, useMemo } from 'react';
 import { usePokemonList } from '../api/pokemonApi';
 import { usePokemonStore } from '../store/pokedexStore';
 import { PokemonRow } from './PokemonRow';
+import {
+  TransitionGroup,
+  CSSTransition,
+} from 'react-transition-group';
+// --- NUEVA IMPORTACIÓN ---
+import {
+  AiOutlineSortAscending,
+  AiOutlineSortDescending,
+} from 'react-icons/ai';
 
 export const PokemonTable = () => {
-  // --- 1. Hook de React Query (Simplificado) ---
-  // CAMBIO: Usamos el nuevo hook. No hay fetchNextPage, hasNextPage, etc.
+  // 1. Hooks (Query y Store)
   const { data: allPokemon, isLoading, error } = usePokemonList();
-
-  // --- 2. Hook de Zustand ---
   const {
     pokemonList,
     setPokemonList,
@@ -18,16 +23,14 @@ export const PokemonTable = () => {
     toggleSortOrder,
   } = usePokemonStore();
 
-  // --- 3. Sincronización React Query -> Zustand ---
-  // Ahora solo se ejecuta una vez cuando 'allPokemon' carga
+  // 2. Sincronización
   useEffect(() => {
     if (allPokemon) {
       setPokemonList(allPokemon);
     }
-  }, [allPokemon, setPokemonList]); // Depende de 'allPokemon'
+  }, [allPokemon, setPokemonList]);
 
-  // --- 4. Lógica de Ordenamiento ---
-  // (No cambia, pero ahora opera sobre la lista de Zustand)
+  // 3. Ordenamiento
   const sortedPokemon = useMemo(() => {
     const sorted = [...pokemonList].sort((a, b) =>
       a.name.localeCompare(b.name)
@@ -38,23 +41,48 @@ export const PokemonTable = () => {
     return sorted;
   }, [pokemonList, sortOrder]);
 
-  // --- 5. Estados de Carga/Error ---
-  // (No cambia)
+  // 4. Estados de Carga
   if (isLoading) return <p>Cargando Pokémon...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // --- 6. Renderizado ---
+  // 5. Renderizado
   return (
     <>
       <table>
-        <thead className="pokedex-header" style={{ backgroundColor: selectedColor ?? 'transparent', transition: 'background-color 0.75s ease-out', }}>
+        <thead
+          className="pokedex-header"
+          style={
+            {
+              '--header-color': selectedColor ?? '#DB3535',
+            } as React.CSSProperties
+          }
+        >
           <tr>
             <th>Imagen</th>
             <th>
-              Nombre{' '}
-              <button onClick={toggleSortOrder}>
-                ({sortOrder === 'asc' ? 'A-Z' : 'Z-A'})
-              </button>
+                <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center', // Centra verticalmente
+                  justifyContent: 'center', // Centra horizontalmente
+                  gap: '4px', // Espacio entre texto e icono
+                }}
+              >
+                Nombre{' '}
+                {/* --- CAMBIO AQUÍ --- */}
+                <button
+                    className="icon-button sort" // Usamos la clase
+                    onClick={toggleSortOrder}
+                    aria-label="Ordenar por nombre"
+                >
+                    {/* Mostramos un icono u otro según el estado */}
+                    {sortOrder === 'asc' ? (
+                    <AiOutlineSortAscending />
+                    ) : (
+                    <AiOutlineSortDescending />
+                    )}
+                </button>
+              </div>
             </th>
             <th>Tipo(s)</th>
             <th>Experiencia</th>
@@ -64,14 +92,27 @@ export const PokemonTable = () => {
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody>
-          {/* Mapeamos sobre la lista ordenada de Zustand */}
-          {sortedPokemon.map((pokemon) => (
-            <PokemonRow key={pokemon.id} pokemon={pokemon} />
-          ))}
-        </tbody>
+
+        {/* El TransitionGroup envuelve el <tbody> */}
+        <TransitionGroup component="tbody">
+          {sortedPokemon.map((pokemon) => {
+            const nodeRef = React.createRef<HTMLTableRowElement>();
+
+            return (
+              <CSSTransition
+                key={pokemon.id}
+                nodeRef={nodeRef}
+                timeout={500}
+                classNames="pokemon-row-transition"
+                unmountOnExit
+                appear
+              >
+                <PokemonRow ref={nodeRef} pokemon={pokemon} />
+              </CSSTransition>
+            );
+          })}
+        </TransitionGroup>
       </table>
-      {/* ¡Ya no hay botón de "Cargar más" ni observer! */}
     </>
   );
 };

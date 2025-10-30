@@ -1,12 +1,253 @@
+table {
+  /* Esto hace que la tabla se expanda al 100% del 
+     ancho de su contenedor padre (.app-container) */
+  width: 100%;
+  
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.type-chip {
+  color: #FFFFFF; /* Color de letra blanco (requisito) */
+  border-radius: 12px; /* Bordes redondeados (chip) */
+  padding: 4px 12px; /* Espaciado interno */
+  font-size: 0.8rem; /* Tamaño de letra más pequeño */
+  font-weight: bold;
+  text-align: center;
+  text-transform: capitalize; /* Asegura la capitalización */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Colores de fondo por tipo --- */
+.type-chip.type-grass { background-color: #78C850; }
+.type-chip.type-fire { background-color: #F08030; }
+.type-chip.type-water { background-color: #6890F0; }
+.type-chip.type-poison { background-color: #A040A0; }
+.type-chip.type-bug { background-color: #A8B820; }
+.type-chip.type-flying { background-color: #A890F0; }
+.type-chip.type-normal { background-color: #A8A878; }
+.type-chip.type-electric { background-color: #F8D030; }
+.type-chip.type-ground { background-color: #E0C068; }
+.type-chip.type-fairy { background-color: #EE99AC; }
+.type-chip.type-fighting { background-color: #C03028; }
+.type-chip.type-psychic { background-color: #F85888; }
+.type-chip.type-rock { background-color: #B8A038; }
+.type-chip.type-steel { background-color: #B8B8D0; }
+.type-chip.type-ice { background-color: #98D8D8; }
+.type-chip.type-ghost { background-color: #705898; }
+.type-chip.type-dragon { background-color: #7038F8; }
+.type-chip.type-dark { background-color: #705848; }
+
+.pokedex-header th {
+  /* Le damos color a las celdas, no al thead (para que el radius funcione) */
+  background-color: var(--header-color, #DB3535); 
+  transition: background-color 0.4s ease-out;
+  
+}
+
+/* --- ESTAS SON LAS LÍNEAS CLAVE --- */
+
+/* Selecciona la PRIMERA celda (th) del header y redondea su esquina superior izquierda */
+.pokedex-header th:first-child {
+  border-top-left-radius: 8px; /* Puedes ajustar este valor */
+}
+
+/* Selecciona la ÚLTIMA celda (th) del header y redondea su esquina superior derecha */
+.pokedex-header th:last-child {
+  border-top-right-radius: 8px; /* Puedes ajustar este valor */
+}
+
+@media (min-width: 1024px) {
+  
+  /* Seleccionamos el contenedor correcto */
+  .app-container {
+    /* El ancho que definiste */
+    width: 75vw; 
+    
+    /* La propiedad para centrarlo */
+    margin: 0 auto;
+    
+    padding-top: 2rem; 
+  }
+}
 .pokemon-row {
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .pokemon-row:hover {
-  background-color: #f0f0f0;
+  background-color: #666;
 }
 
-.pokemon-row:hover {
-  background-color: #f0f0f0; 
+/* ============================================== */
+/* === ANIMACIÓN WRAPPER (FINAL - hacia la derecha) === */
+/* ============================================== */
+
+/* 1. El <div> wrapper define la transición */
+.cell-wrapper {
+  /* Mantenemos 500ms y ease-in-out para suavidad */
+  transition: opacity 700ms ease-in-out, transform 700ms ease-in-out;
+}
+
+/* 2. Estado inicial (Aparecer y Entrar) */
+/* La fila aparece desde la izquierda */
+.pokemon-row-transition-appear .cell-wrapper,
+.pokemon-row-transition-enter .cell-wrapper {
+  opacity: 0;
+  transform: translateX(-100%); /* Empieza completamente a la izquierda */
+}
+
+/* 3. Estado activo (Animación de Aparecer y Entrar) */
+.pokemon-row-transition-appear-active .cell-wrapper,
+.pokemon-row-transition-enter-active .cell-wrapper {
+  opacity: 1;
+  transform: translateX(0); /* Se desliza hasta su posición normal */
+}
+
+/* 4. Estado de salida (Al eliminar) */
+/* Está en su posición normal antes de desaparecer */
+.pokemon-row-transition-exit .cell-wrapper {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 5. Estado activo de salida (Animación de eliminar) */
+/* Se desvanece y se mueve hacia la derecha */
+.pokemon-row-transition-exit-active .cell-wrapper {
+  opacity: 0;
+  transform: translateX(100%); /* Se desplaza completamente a la derecha */
+}
+
+/* ============================================== */
+/* === OTROS ESTILOS === */
+/* ============================================== */
+
+.pokemon-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* ============================================== */
+/* === ESTILOS PARA BOTONES DE ICONOS === */
+/* ============================================== */
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  
+  /* Tamaño y alineación */
+  font-size: 1.1rem; /* Tamaño del icono */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Transición suave */
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:focus {
+  outline: none;
+  box-shadow: none; /* Fallback por si acaso */
+}
+
+.icon-button.sort {
+  color: #FFFFFF; /* Color blanco para el header */
+  font-size: 2rem; /* Un poco más grande */
+  margin-left: 4px; /* Pequeño espacio */
+  opacity: 0.8;
+}
+.icon-button.sort:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Color y hover para el botón de editar */
+.icon-button.edit {
+  color: #000; /* Azul */
+}
+.icon-button.edit:hover {
+  color: #000;
+  transform: scale(1.15);
+}
+
+/* Color y hover para el botón de eliminar */
+.icon-button.delete {
+  color: #000; /* Rojo */
+}
+.icon-button.delete:hover {
+  color: #000;
+  transform: scale(1.15);
+}
+
+
+.site-header {
+  position: relative; /* Contenedor para el centrado */
+  margin-bottom: 1rem;
+}
+
+.site-header h1 {
+  text-align: center; /* Centramos el H1 */
+  margin: 0;
+}
+
+.theme-toggle {
+  /* Posicionamiento del botón */
+  position: absolute;
+  right: 0;
+  top: 50%;
+  /* transform: translateY(-50%); */
+
+  /* Estilos del botón */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%; /* Botón redondo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+
+/* ============================================== */
+/* === DEFINICIÓN DEL TEMA OSCURO === */
+/* ============================================== */
+
+/* Por defecto (light) */
+body.light {
+  background-color: #F0F2F5; /* Un gris claro */
+  color: #1c1c1c;
+}
+
+/* Tema oscuro */
+body.dark {
+  background-color: #1a1a1a;
+  color: #eaeaea;
+}
+
+/* Ajustes para la tabla en modo oscuro */
+body.dark .pokemon-row:hover {
+  background-color: #2c2c2c;
+}
+
+/* Ajuste para la fila condicional (azul) en modo oscuro */
+/* Usamos !important para sobreescribir el estilo en línea de React */
+body.dark .pokemon-row[style*="rgb(127, 174, 227)"] {
+  background-color: #1e3a8a !important; /* Un azul oscuro */
+}
+
+/* Ajuste para los chips en modo oscuro */
+body.dark .type-chip {
+  color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }

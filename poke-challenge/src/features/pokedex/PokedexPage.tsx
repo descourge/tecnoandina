@@ -1,25 +1,38 @@
-// src/features/pokedex/PokedexPage.tsx
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PokemonTable } from './components/PokemonTable';
+import { ThemeToggle } from './components/ThemeToggle'; // <-- IMPORTAR TOGGLE
+import { usePokemonStore } from './store/pokedexStore'; // <-- IMPORTAR STORE
 
-// Este es el componente "página" que envuelve tu tabla
 const PokedexPage: React.FC = () => {
+  // --- LÓGICA DEL TEMA ---
+  // Obtenemos el tema del store
+  const theme = usePokemonStore((state) => state.theme);
+
+  // Este Effect aplica el tema a todo el sitio
+  useEffect(() => {
+    // Limpiamos clases anteriores
+    document.body.classList.remove('light', 'dark');
+    // Añadimos la clase actual
+    document.body.classList.add(theme);
+  }, [theme]); // Se ejecuta cada vez que 'theme' cambia
+  // --- FIN LÓGICA TEMA ---
+
   return (
-    <div className="pokedex-page-container" style={{ padding: '20px' }}>
-      <h1>PokéChallenge</h1>
+    // Este es tu contenedor principal
+    <div className="app-container" style={{ padding: '20px' }}>
+      
+      {/* --- NUEVO HEADER --- */}
+      <header className="site-header">
+        <h1>PokéChallenge</h1>
+        <ThemeToggle />
+      </header>
+      {/* --- FIN HEADER --- */}
+
       <p>Explora la lista de Pokémon.</p>
       
-      {/* Aquí renderizamos la tabla que ya creamos */}
       <PokemonTable />
     </div>
   );
 };
 
-// La clave está aquí. Elige UNA de estas dos formas de exportar:
-
-// Opción A: Exportación por defecto (Recomendada para páginas)
 export default PokedexPage;
-
-// Opción B: Exportación por nombre
-// export const PokedexPage = () => { ... };

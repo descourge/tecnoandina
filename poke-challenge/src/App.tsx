@@ -2,7 +2,7 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-// import './App.css' // <-- (Puedes borrar el contenido de este archivo)
+import './App.css' // <-- (Puedes borrar el contenido de este archivo)
 
 // --- Importa tu página ---
 import PokedexPage from './features/pokedex/PokedexPage';

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { type Pokemon } from '../api/pokemonApi'; // Importamos el tipo
+import { type Pokemon } from '../api/pokemonApi';
 
 // Define el tipo para el estado
 interface PokemonState {
@@ -8,26 +8,27 @@ interface PokemonState {
   pokemonList: Pokemon[];
   selectedColor: string | null;
   sortOrder: 'asc' | 'desc';
+  theme: 'light' | 'dark'; // <-- NUEVO ESTADO
 
   // Estado persistido
-  dynamicFields: Record<number, string>; // { [pokemonId]: "apodo" }
+  dynamicFields: Record<number, string>;
 
   // Acciones
   setPokemonList: (pokemon: Pokemon[]) => void;
   setSelectedColor: (color: string | null) => void;
   toggleSortOrder: () => void;
+  toggleTheme: () => void; // <-- NUEVA ACCIÓN
   
   // Acciones para la tabla
   deletePokemon: (pokemonId: number) => void;
   editPokemonName: (pokemonId: number, newName: string) => void;
   
-  // Acciones para el campo dinámico (persistido)
+  // Acciones para el campo dinámico
   setDynamicField: (pokemonId: number, value: string) => void;
 }
 
 // Creamos el store
 export const usePokemonStore = create<PokemonState>()(
-  // Usamos el middleware 'persist'
   persist(
     (set) => ({
       // --- Valores por defecto ---
@@ -35,15 +36,20 @@ export const usePokemonStore = create<PokemonState>()(
       selectedColor: null,
       sortOrder: 'asc',
       dynamicFields: {},
+      theme: 'light', // <-- VALOR INICIAL
 
       // --- Acciones ---
       setPokemonList: (pokemon) => set({ pokemonList: pokemon }),
-
       setSelectedColor: (color) => set({ selectedColor: color }),
-
       toggleSortOrder: () =>
         set((state) => ({
           sortOrder: state.sortOrder === 'asc' ? 'desc' : 'asc',
+        })),
+      
+      // <-- NUEVA ACCIÓN IMPLEMENTADA
+      toggleTheme: () =>
+        set((state) => ({
+          theme: state.theme === 'light' ? 'dark' : 'light',
         })),
 
       deletePokemon: (pokemonId) =>
@@ -67,10 +73,13 @@ export const usePokemonStore = create<PokemonState>()(
         })),
     }),
     {
-      // Opciones de 'persist'
-      name: 'pokemon-dynamic-storage', // Nombre de la clave en localStorage
-      // Solo persistimos el campo 'dynamicFields'
-      partialize: (state) => ({ dynamicFields: state.dynamicFields }),
+      name: 'pokemon-dynamic-storage',
+      // --- ACTUALIZAMOS 'PARTIALIZE' ---
+      // Le decimos a 'persist' que también guarde el tema
+      partialize: (state) => ({
+        dynamicFields: state.dynamicFields,
+        theme: state.theme, // <-- GUARDAR TEMA
+      }),
     }
   )
 );
