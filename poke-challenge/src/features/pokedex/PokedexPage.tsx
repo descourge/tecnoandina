@@ -1,36 +1,68 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+// --- NUEVA IMPORTACIÓN ---
+import { PokemonTableSkeleton } from './components/PokemonTableSkeleton';
+// -----------------------
 import { PokemonTable } from './components/PokemonTable';
-import { ThemeToggle } from './components/ThemeToggle'; // <-- IMPORTAR TOGGLE
-import { usePokemonStore } from './store/pokedexStore'; // <-- IMPORTAR STORE
+import { ThemeToggle } from './components/ThemeToggle';
+import { EditModal } from './components/EditModal';
+import { usePokemonStore } from './store/pokedexStore';
 
 const PokedexPage: React.FC = () => {
-  // --- LÓGICA DEL TEMA ---
-  // Obtenemos el tema del store
   const theme = usePokemonStore((state) => state.theme);
-
-  // Este Effect aplica el tema a todo el sitio
+  
+  // Lógica de Lazy Loading (sin cambios)
+  const [isTableVisible, setIsTableVisible] = useState(false);
+  const tableTriggerRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
-    // Limpiamos clases anteriores
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsTableVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '100px' }
+    );
+
+    if (tableTriggerRef.current) {
+      observer.observe(tableTriggerRef.current);
+    }
+
+    return () => {
+      if (tableTriggerRef.current) {
+        observer.unobserve(tableTriggerRef.current);
+      }
+    };
+  }, []);
+  
+  // Effect para el tema (sin cambios)
+  useEffect(() => {
     document.body.classList.remove('light', 'dark');
-    // Añadimos la clase actual
     document.body.classList.add(theme);
-  }, [theme]); // Se ejecuta cada vez que 'theme' cambia
-  // --- FIN LÓGICA TEMA ---
+  }, [theme]);
 
   return (
-    // Este es tu contenedor principal
     <div className="app-container" style={{ padding: '20px' }}>
-      
-      {/* --- NUEVO HEADER --- */}
       <header className="site-header">
         <h1>PokéChallenge</h1>
         <ThemeToggle />
       </header>
-      {/* --- FIN HEADER --- */}
 
       <p>Explora la lista de Pokémon.</p>
       
-      <PokemonTable />
+      {/* --- CAMBIO AQUÍ --- */}
+      <div ref={tableTriggerRef}>
+        {isTableVisible ? (
+          <PokemonTable />
+        ) : (
+          // Reemplazamos el placeholder por el skeleton
+          <PokemonTableSkeleton />
+        )}
+      </div>
+      {/* --- FIN DEL CAMBIO --- */}
+      
+      <EditModal />
     </div>
   );
 };

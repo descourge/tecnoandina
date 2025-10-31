@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react'; // <-- Quitamos useState
 import { type Pokemon } from '../api/pokemonApi';
 import { usePokemonStore } from '../store/pokedexStore';
-// --- CAMBIO: Importamos de 'ai' (Ant Design) en lugar de 'fa' ---
 import {
   AiOutlineEdit,
   AiOutlineDelete,
-  AiOutlineSave,
+  AiOutlineSave, // <-- Ya no necesitamos AiOutlineSave
 } from 'react-icons/ai';
 
 interface PokemonRowProps {
@@ -21,28 +20,31 @@ export const PokemonRow = React.forwardRef<
   HTMLTableRowElement,
   PokemonRowProps
 >(({ pokemon }, ref) => {
-  // 1. Hooks y Handlers (sin cambios)
+  // --- Quitamos isEditing y editPokemonName de aquí ---
   const {
     setSelectedColor,
     deletePokemon,
-    editPokemonName,
     dynamicFields,
     setDynamicField,
+    openEditModal, // <-- AÑADIMOS ESTO
   } = usePokemonStore();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedName, setEditedName] = useState(pokemon.name);
+
+  // --- Quitamos el estado local [isEditing, setIsEditing] ---
+
+  // 1. Handlers
   const handleRowClick = () => setSelectedColor(pokemon.color);
+  
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     deletePokemon(pokemon.id);
   };
+
+  // --- CAMBIAMOS EL HANDLER DE EDITAR ---
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isEditing) {
-      editPokemonName(pokemon.id, editedName);
-    }
-    setIsEditing(!isEditing);
+    openEditModal(pokemon); // <-- Solo abre el modal
   };
+
   const handleDynamicFieldChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -65,40 +67,32 @@ export const PokemonRow = React.forwardRef<
       style={rowStyle}
       className="pokemon-row"
     >
-      {/* --- Contenido de celdas (sin cambios) --- */}
       <td>
         <div className="cell-wrapper">
           <img
             src={pokemon.imageUrl}
             alt={pokemon.name}
-            width="64"
-            height="64"
+            width="50"
+            height="50"
           />
         </div>
       </td>
+
+      {/* --- CAMBIO: Celda "Nombre" (Simplificada) --- */}
       <td>
         <div className="cell-wrapper">
-          {isEditing ? (
-            <input
-              type="text"
-              value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
-              onClick={(e) => e.stopPropagation()}
-              autoFocus
-            />
-          ) : (
-            <span>{capitalize(pokemon.name)}</span>
-          )}
+          {/* Ya no hay condicional, solo el span */}
+          <span>{capitalize(pokemon.name)}</span>
         </div>
       </td>
+      {/* --- FIN CAMBIO --- */}
+
       <td>
         <div className="cell-wrapper">
-          {/* Añadimos un contenedor flex para los chips */}
           <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
             {pokemon.types.map((type) => (
               <span
                 key={type}
-                // Añadimos una clase base y una clase específica del tipo
                 className={`type-chip type-${type}`}
               >
                 {capitalize(type)}
@@ -117,13 +111,14 @@ export const PokemonRow = React.forwardRef<
       </td>
       <td>
         <div className="cell-wrapper">
-{(pokemon.weight / 10).toFixed(1)} kg.
+          {(pokemon.weight / 10).toFixed(1)} kg.
         </div>
       </td>
       <td>
         <div className="cell-wrapper">
           <input
             type="text"
+            className="dynamic-field-input"
             placeholder="Añadir apodo..."
             value={dynamicFieldValue}
             onChange={handleDynamicFieldChange}
@@ -131,8 +126,6 @@ export const PokemonRow = React.forwardRef<
           />
         </div>
       </td>
-
-      {/* --- Columna de Acciones (Iconos cambiados) --- */}
       <td>
         <div
           className="cell-wrapper"
@@ -142,23 +135,20 @@ export const PokemonRow = React.forwardRef<
             gap: '0.75rem',
           }}
         >
-          {/* Botón de Editar/Guardar */}
+          {/* --- CAMBIO: Botón de Editar (Simplificado) --- */}
           <button
             className="icon-button edit"
             onClick={handleEditClick}
-            aria-label={isEditing ? 'Guardar' : 'Editar'}
+            aria-label="Editar"
           >
-            {/* --- CAMBIO --- */}
-            {isEditing ? <AiOutlineSave /> : <AiOutlineEdit />}
+            <AiOutlineEdit /> {/* Ya no cambia a "Guardar" */}
           </button>
-
-          {/* Botón de Eliminar */}
+          {/* --- FIN CAMBIO --- */}
           <button
             className="icon-button delete"
             onClick={handleDeleteClick}
             aria-label="Eliminar"
           >
-            {/* --- CAMBIO --- */}
             <AiOutlineDelete />
           </button>
         </div>

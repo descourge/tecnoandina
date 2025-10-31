@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { type Pokemon } from '../api/pokemonApi';
+import { type Pokemon } from '../api/pokemonApi'; // Importamos el tipo
 
 // Define el tipo para el estado
 interface PokemonState {
@@ -8,7 +8,8 @@ interface PokemonState {
   pokemonList: Pokemon[];
   selectedColor: string | null;
   sortOrder: 'asc' | 'desc';
-  theme: 'light' | 'dark'; // <-- NUEVO ESTADO
+  theme: 'light' | 'dark';
+  editingPokemon: Pokemon | null; // <-- NUEVO ESTADO
 
   // Estado persistido
   dynamicFields: Record<number, string>;
@@ -17,7 +18,9 @@ interface PokemonState {
   setPokemonList: (pokemon: Pokemon[]) => void;
   setSelectedColor: (color: string | null) => void;
   toggleSortOrder: () => void;
-  toggleTheme: () => void; // <-- NUEVA ACCIÓN
+  toggleTheme: () => void;
+  openEditModal: (pokemon: Pokemon) => void; // <-- NUEVA ACCIÓN
+  closeEditModal: () => void; // <-- NUEVA ACCIÓN
   
   // Acciones para la tabla
   deletePokemon: (pokemonId: number) => void;
@@ -36,7 +39,8 @@ export const usePokemonStore = create<PokemonState>()(
       selectedColor: null,
       sortOrder: 'asc',
       dynamicFields: {},
-      theme: 'light', // <-- VALOR INICIAL
+      theme: 'light',
+      editingPokemon: null, // <-- VALOR INICIAL
 
       // --- Acciones ---
       setPokemonList: (pokemon) => set({ pokemonList: pokemon }),
@@ -45,12 +49,15 @@ export const usePokemonStore = create<PokemonState>()(
         set((state) => ({
           sortOrder: state.sortOrder === 'asc' ? 'desc' : 'asc',
         })),
-      
-      // <-- NUEVA ACCIÓN IMPLEMENTADA
       toggleTheme: () =>
         set((state) => ({
           theme: state.theme === 'light' ? 'dark' : 'light',
         })),
+
+      // --- NUEVAS ACCIONES IMPLEMENTADAS ---
+      openEditModal: (pokemon) => set({ editingPokemon: pokemon }),
+      closeEditModal: () => set({ editingPokemon: null }),
+      // ------------------------------------
 
       deletePokemon: (pokemonId) =>
         set((state) => ({
@@ -59,9 +66,15 @@ export const usePokemonStore = create<PokemonState>()(
 
       editPokemonName: (pokemonId, newName) =>
         set((state) => ({
+          // Actualizamos la lista principal
           pokemonList: state.pokemonList.map((p) =>
             p.id === pokemonId ? { ...p, name: newName } : p
           ),
+          // Y también el Pokémon que se está editando (para que se actualice en el modal)
+          editingPokemon:
+            state.editingPokemon && state.editingPokemon.id === pokemonId
+              ? { ...state.editingPokemon, name: newName }
+              : state.editingPokemon,
         })),
 
       setDynamicField: (pokemonId, value) =>
@@ -74,11 +87,9 @@ export const usePokemonStore = create<PokemonState>()(
     }),
     {
       name: 'pokemon-dynamic-storage',
-      // --- ACTUALIZAMOS 'PARTIALIZE' ---
-      // Le decimos a 'persist' que también guarde el tema
       partialize: (state) => ({
         dynamicFields: state.dynamicFields,
-        theme: state.theme, // <-- GUARDAR TEMA
+        theme: state.theme,
       }),
     }
   )

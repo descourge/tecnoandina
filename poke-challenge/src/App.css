@@ -7,6 +7,62 @@ table {
   border-spacing: 0;
 }
 
+/* Animación de pulso */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* El bloque gris base */
+.skeleton {
+  width: 100%;
+  height: 1.25rem; /* Altura estándar */
+  border-radius: 4px;
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  /* Color del skeleton (claro y oscuro) */
+  background-color: #e0e0e0; 
+}
+
+body.dark .skeleton {
+  background-color: #3a3a3a;
+}
+
+/* Ajuste para el skeleton de la imagen */
+.skeleton-img {
+  height: 50px; /* Misma altura que la imagen real */
+  width: 50px;
+  border-radius: 50%; /* Redondo */
+  margin: 0 auto; /* Centrarlo */
+}
+
+/* Ajuste para el skeleton de texto */
+.skeleton-row td:not(:first-child) .skeleton-text {
+  /* Hacemos que el ancho sea aleatorio para un look más real */
+  width: 80%;
+}
+
+.skeleton-row td:nth-child(3) .skeleton-text,
+.skeleton-row td:nth-child(5) .skeleton-text {
+  width: 60%;
+}
+
+/* Input de "Campo Dinámico": estilo de caja */
+.dynamic-field-input {
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #666 !important;
+}
+
 .type-chip {
   color: #FFFFFF; /* Color de letra blanco (requisito) */
   border-radius: 12px; /* Bordes redondeados (chip) */
@@ -148,13 +204,12 @@ table {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.icon-button:focus {
+.icon-button:focus, .theme-toggle:focus {
   outline: none;
   box-shadow: none; /* Fallback por si acaso */
 }
 
 .icon-button.sort {
-  color: #FFFFFF; /* Color blanco para el header */
   font-size: 2rem; /* Un poco más grande */
   margin-left: 4px; /* Pequeño espacio */
   opacity: 0.8;
@@ -165,18 +220,14 @@ table {
 }
 
 /* Color y hover para el botón de editar */
-.icon-button.edit {
-  color: #000; /* Azul */
+.icon-button.edit, .icon-button.delete, .icon-button.sort {
+  color: var(--icon-color-table);
 }
 .icon-button.edit:hover {
   color: #000;
   transform: scale(1.15);
 }
 
-/* Color y hover para el botón de eliminar */
-.icon-button.delete {
-  color: #000; /* Rojo */
-}
 .icon-button.delete:hover {
   color: #000;
   transform: scale(1.15);
@@ -227,12 +278,22 @@ table {
 body.light {
   background-color: #F0F2F5; /* Un gris claro */
   color: #1c1c1c;
+
+  /* --- VARIABLES DE ICONOS (Gris/Blanco) --- */
+  --icon-color-header: #FFFFFF; /* Icono de ordenar (blanco) */
+  --icon-color-table: #4a4a4a; /* Iconos de tabla (gris oscuro) */
+  /* -------------------------------------- */
 }
 
 /* Tema oscuro */
 body.dark {
   background-color: #1a1a1a;
   color: #eaeaea;
+
+  /* --- VARIABLES DE ICONOS (Gris/Blanco) --- */
+  --icon-color-header: #eaeaea; /* Icono de ordenar (casi blanco) */
+  --icon-color-table: #b0b0b0; /* Iconos de tabla (gris claro) */
+  /* -------------------------------------- */
 }
 
 /* Ajustes para la tabla en modo oscuro */
@@ -251,3 +312,196 @@ body.dark .type-chip {
   color: #FFFFFF;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* Fondo oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Asegura que esté al frente */
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra todo */
+  justify-content: center;
+  background-color: var(--modal-bg, #FFFFFF);
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-image {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.modal-content h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+  color: var(--modal-text, #1c1c1c);
+}
+
+.modal-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.modal-button {
+  flex: 1; /* Ocupan el mismo espacio */
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.modal-button:active {
+  transform: scale(0.98);
+}
+
+.modal-button.confirm {
+  background-color: #28a745; /* Verde */
+  color: white;
+}
+.modal-button.confirm:hover {
+  background-color: #218838;
+}
+
+.modal-button.cancel {
+  background-color: #e0e0e0; /* Gris */
+  color: #333;
+}
+.modal-button.cancel:hover {
+  background-color: #c7c7c7;
+}
+
+/* Ajustes del modal para Dark Mode */
+body.dark {
+  --modal-bg: #2c2c2c;
+  --modal-text: #eaeaea;
+}
+
+body.dark .modal-input {
+  background-color: #333;
+  color: #eaeaea;
+  border-color: #555;
+}
+
+body.dark .modal-button.cancel {
+  background-color: #4a4a4a;
+  color: #eaeaea;
+}
+body.dark .modal-button.cancel:hover {
+  background-color: #5a5a5a;
+}
+
+/* ============================================== */
+/* === ESTILOS DEL MODAL === */
+/* ============================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  
+  /* --- CAMBIO: 'transition' ELIMINADO DE LA CLASE BASE --- */
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--modal-bg, #FFFFFF);
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  
+  /* --- CAMBIO: 'transition' ELIMINADO DE LA CLASE BASE --- */
+}
+
+/* --- ANIMACIÓN DE TRANSICIÓN DEL MODAL --- */
+
+/* Estado inicial (Entrando Y Apareciendo) */
+.modal-fade-appear,
+.modal-fade-enter {
+  opacity: 0;
+}
+.modal-fade-appear .modal-content,
+.modal-fade-enter .modal-content {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Estado activo (Entrando Y Apareciendo) */
+.modal-fade-appear-active,
+.modal-fade-enter-active {
+  opacity: 1;
+  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
+  transition: opacity 300ms ease-in-out;
+}
+.modal-fade-appear-active .modal-content,
+.modal-fade-enter-active .modal-content {
+  opacity: 1;
+  transform: scale(1);
+  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+
+/* Estado inicial (Saliendo) */
+.modal-fade-exit {
+  opacity: 1;
+}
+.modal-fade-exit .modal-content {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Estado activo (Saliendo) */
+.modal-fade-exit-active {
+  opacity: 0;
+  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
+  transition: opacity 300ms ease-in-out;
+}
+.modal-fade-exit-active .modal-content {
+  opacity: 0;
+  transform: scale(0.95);
+  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+/* --- FIN ANIMACIÓN --- */
+
+
+/* ... (El resto de tus estilos .modal-image, .modal-input, etc.) ... */

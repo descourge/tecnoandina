@@ -11,6 +11,7 @@ import {
   AiOutlineSortAscending,
   AiOutlineSortDescending,
 } from 'react-icons/ai';
+import { PokemonTableSkeleton } from './PokemonTableSkeleton';
 
 export const PokemonTable = () => {
   // 1. Hooks (Query y Store)
@@ -42,7 +43,7 @@ export const PokemonTable = () => {
   }, [pokemonList, sortOrder]);
 
   // 4. Estados de Carga
-  if (isLoading) return <p>Cargando Pokémon...</p>;
+  if (isLoading) return <PokemonTableSkeleton />;
   if (error) return <p>Error: {error.message}</p>;
 
   // 5. Renderizado
