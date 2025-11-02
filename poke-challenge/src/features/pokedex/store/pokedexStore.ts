@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { type Pokemon } from '../api/pokemonApi'; // Importamos el tipo
+import { type Pokemon } from '../api/pokemonApi';
 
 // Define el tipo para el estado
 interface PokemonState {
@@ -9,7 +9,8 @@ interface PokemonState {
   selectedColor: string | null;
   sortOrder: 'asc' | 'desc';
   theme: 'light' | 'dark';
-  editingPokemon: Pokemon | null; // <-- NUEVO ESTADO
+  editingPokemon: Pokemon | null;
+  searchQuery: string; // <-- NUEVO ESTADO
 
   // Estado persistido
   dynamicFields: Record<number, string>;
@@ -19,8 +20,9 @@ interface PokemonState {
   setSelectedColor: (color: string | null) => void;
   toggleSortOrder: () => void;
   toggleTheme: () => void;
-  openEditModal: (pokemon: Pokemon) => void; // <-- NUEVA ACCIÓN
-  closeEditModal: () => void; // <-- NUEVA ACCIÓN
+  openEditModal: (pokemon: Pokemon) => void;
+  closeEditModal: () => void;
+  setSearchQuery: (query: string) => void; // <-- NUEVA ACCIÓN
   
   // Acciones para la tabla
   deletePokemon: (pokemonId: number) => void;
@@ -40,7 +42,8 @@ export const usePokemonStore = create<PokemonState>()(
       sortOrder: 'asc',
       dynamicFields: {},
       theme: 'light',
-      editingPokemon: null, // <-- VALOR INICIAL
+      editingPokemon: null,
+      searchQuery: '', // <-- VALOR INICIAL
 
       // --- Acciones ---
       setPokemonList: (pokemon) => set({ pokemonList: pokemon }),
@@ -54,10 +57,11 @@ export const usePokemonStore = create<PokemonState>()(
           theme: state.theme === 'light' ? 'dark' : 'light',
         })),
 
-      // --- NUEVAS ACCIONES IMPLEMENTADAS ---
       openEditModal: (pokemon) => set({ editingPokemon: pokemon }),
       closeEditModal: () => set({ editingPokemon: null }),
-      // ------------------------------------
+
+      // --- NUEVA ACCIÓN IMPLEMENTADA ---
+      setSearchQuery: (query) => set({ searchQuery: query }),
 
       deletePokemon: (pokemonId) =>
         set((state) => ({
@@ -66,11 +70,9 @@ export const usePokemonStore = create<PokemonState>()(
 
       editPokemonName: (pokemonId, newName) =>
         set((state) => ({
-          // Actualizamos la lista principal
           pokemonList: state.pokemonList.map((p) =>
             p.id === pokemonId ? { ...p, name: newName } : p
           ),
-          // Y también el Pokémon que se está editando (para que se actualice en el modal)
           editingPokemon:
             state.editingPokemon && state.editingPokemon.id === pokemonId
               ? { ...state.editingPokemon, name: newName }

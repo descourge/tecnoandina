@@ -127,14 +127,7 @@ export const PokemonRow = React.forwardRef<
         </div>
       </td>
       <td>
-        <div
-          className="cell-wrapper"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '0.75rem',
-          }}
-        >
+        <div className="cell-wrapper action-buttons-wrapper">
           {/* --- CAMBIO: Botón de Editar (Simplificado) --- */}
           <button
             className="icon-button edit"

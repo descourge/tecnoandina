@@ -1,80 +1,198 @@
+/* ============================================== */
+/* === IMPORTACIÓN DE FUENTE === */
+/* ============================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* ============================================== */
+/* === DEFINICIÓN DEL TEMA (Variables) === */
+/* ============================================== */
+
+/* Por defecto (light) */
+body.light {
+  background-color: #F0F2F5;
+  color: #1c1c1c;
+  --icon-color-table: #4a4a4a;
+  --modal-bg: #FFFFFF;
+  --modal-text: #1c1c1c;
+  --row-bg: #FFFFFF;
+  --row-bg-hover: #f5f5f5;
+  --h1-color: #db3535; 
+  --search-bg: #FFFFFF;
+  --search-text: #1c1c1c;
+  --search-border: #ccc;
+}
+
+/* Tema oscuro */
+body.dark {
+  background-color: #1a1a1a;
+  color: #eaeaea;
+  --icon-color-table: #b0b0b0;
+  --modal-bg: #2c2c2c;
+  --modal-text: #eaeaea;
+  --row-bg: #242424;
+  --row-bg-hover: #3a3a3a;
+  --h1-color: #db3535;
+  --search-bg: #333;
+  --search-text: #eaeaea;
+  --search-border: #555;
+}
+
+/* ============================================== */
+/* === ESTILOS GLOBALES Y FUENTE === */
+/* ============================================== */
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ============================================== */
+/* === ESTILOS DEL HEADER === */
+/* ============================================== */
+
+/* Layout Móvil (Default) */
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.header-top-row,
+.header-bottom-row {
+  width: 100%;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.site-header h1 {
+  text-align: center;
+  margin: 0;
+  font-size: 2.2rem;
+  color: var(--h1-color);
+}
+
+/* Theme Toggle (Móvil - Sin animación) */
+.theme-toggle {
+  position: static;
+  transform: none;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.theme-toggle:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.theme-toggle img {
+  width: 40px;
+  height: 40px;
+}
+
+/* Barra de búsqueda */
+.search-bar-container {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: var(--search-bg);
+  color: var(--search-text);
+  border: 1px solid var(--search-border);
+}
+
+/* ============================================== */
+/* === ESTILOS DE LA TABLA (Base) === */
+/* ============================================== */
+
+.table-container {
+  width: 100%;
+  
+  box-shadow: 0px 0px 8px 0px #0C0C0D0D, 
+              0px 0px 24px 0px #0C0C0D1A;
+  
+  border-radius: 8px;
+  
+  /* --- CORRECCIÓN --- */
+  /* 'overflow' se definirá en las media queries */
+  /* ------------------ */
+}
+
 table {
-  /* Esto hace que la tabla se expanda al 100% del 
-     ancho de su contenedor padre (.app-container) */
-  width: 100%;
-  
-  border-collapse: separate;
   border-spacing: 0;
-}
-
-/* Animación de pulso */
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* El bloque gris base */
-.skeleton {
   width: 100%;
-  height: 1.25rem; /* Altura estándar */
-  border-radius: 4px;
-  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  
-  /* Color del skeleton (claro y oscuro) */
-  background-color: #e0e0e0; 
 }
 
-body.dark .skeleton {
-  background-color: #3a3a3a;
+/* Header de la Tabla */
+.pokedex-header th {
+  background-color: var(--header-color, #DB3535); 
+  transition: background-color 0.4s ease-out;
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #FFFFFF;
 }
 
-/* Ajuste para el skeleton de la imagen */
-.skeleton-img {
-  height: 50px; /* Misma altura que la imagen real */
-  width: 50px;
-  border-radius: 50%; /* Redondo */
-  margin: 0 auto; /* Centrarlo */
+/* Fila de la Tabla */
+.pokemon-row {
+  background-color: var(--row-bg);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Ajuste para el skeleton de texto */
-.skeleton-row td:not(:first-child) .skeleton-text {
-  /* Hacemos que el ancho sea aleatorio para un look más real */
-  width: 80%;
+.pokemon-row:hover {
+  background-color: var(--row-bg-hover);
 }
 
-.skeleton-row td:nth-child(3) .skeleton-text,
-.skeleton-row td:nth-child(5) .skeleton-text {
-  width: 60%;
+/* Fila condicional (azul) */
+body.dark .pokemon-row[style*="rgb(127, 174, 227)"] {
+  background-color: #1e3a8a !important;
 }
 
-/* Input de "Campo Dinámico": estilo de caja */
-.dynamic-field-input {
-  padding: 4px 6px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  color: #666 !important;
-}
+/* ============================================== */
+/* === COMPONENTES DE LA TABLA === */
+/* ============================================== */
 
+/* Chips de Tipo */
 .type-chip {
-  color: #FFFFFF; /* Color de letra blanco (requisito) */
-  border-radius: 12px; /* Bordes redondeados (chip) */
-  padding: 4px 12px; /* Espaciado interno */
-  font-size: 0.8rem; /* Tamaño de letra más pequeño */
+  color: #FFFFFF;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
   font-weight: bold;
   text-align: center;
-  text-transform: capitalize; /* Asegura la capitalización */
+  text-transform: capitalize;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Colores de fondo por tipo --- */
+body.dark .type-chip {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Colores de Chips */
 .type-chip.type-grass { background-color: #78C850; }
 .type-chip.type-fire { background-color: #F08030; }
 .type-chip.type-water { background-color: #6890F0; }
@@ -94,124 +212,41 @@ body.dark .skeleton {
 .type-chip.type-dragon { background-color: #7038F8; }
 .type-chip.type-dark { background-color: #705848; }
 
-.pokedex-header th {
-  /* Le damos color a las celdas, no al thead (para que el radius funcione) */
-  background-color: var(--header-color, #DB3535); 
-  transition: background-color 0.4s ease-out;
-  
+/* Input de Campo Dinámico */
+.dynamic-field-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--search-bg);
+  color: var(--search-text);
+  border: 1px solid var(--search-border);
 }
 
-/* --- ESTAS SON LAS LÍNEAS CLAVE --- */
-
-/* Selecciona la PRIMERA celda (th) del header y redondea su esquina superior izquierda */
-.pokedex-header th:first-child {
-  border-top-left-radius: 8px; /* Puedes ajustar este valor */
-}
-
-/* Selecciona la ÚLTIMA celda (th) del header y redondea su esquina superior derecha */
-.pokedex-header th:last-child {
-  border-top-right-radius: 8px; /* Puedes ajustar este valor */
-}
-
-@media (min-width: 1024px) {
-  
-  /* Seleccionamos el contenedor correcto */
-  .app-container {
-    /* El ancho que definiste */
-    width: 75vw; 
-    
-    /* La propiedad para centrarlo */
-    margin: 0 auto;
-    
-    padding-top: 2rem; 
-  }
-}
-.pokemon-row {
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.pokemon-row:hover {
-  background-color: #666;
-}
-
-/* ============================================== */
-/* === ANIMACIÓN WRAPPER (FINAL - hacia la derecha) === */
-/* ============================================== */
-
-/* 1. El <div> wrapper define la transición */
-.cell-wrapper {
-  /* Mantenemos 500ms y ease-in-out para suavidad */
-  transition: opacity 700ms ease-in-out, transform 700ms ease-in-out;
-}
-
-/* 2. Estado inicial (Aparecer y Entrar) */
-/* La fila aparece desde la izquierda */
-.pokemon-row-transition-appear .cell-wrapper,
-.pokemon-row-transition-enter .cell-wrapper {
-  opacity: 0;
-  transform: translateX(-100%); /* Empieza completamente a la izquierda */
-}
-
-/* 3. Estado activo (Animación de Aparecer y Entrar) */
-.pokemon-row-transition-appear-active .cell-wrapper,
-.pokemon-row-transition-enter-active .cell-wrapper {
-  opacity: 1;
-  transform: translateX(0); /* Se desliza hasta su posición normal */
-}
-
-/* 4. Estado de salida (Al eliminar) */
-/* Está en su posición normal antes de desaparecer */
-.pokemon-row-transition-exit .cell-wrapper {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* 5. Estado activo de salida (Animación de eliminar) */
-/* Se desvanece y se mueve hacia la derecha */
-.pokemon-row-transition-exit-active .cell-wrapper {
-  opacity: 0;
-  transform: translateX(100%); /* Se desplaza completamente a la derecha */
-}
-
-/* ============================================== */
-/* === OTROS ESTILOS === */
-/* ============================================== */
-
-.pokemon-row {
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* ============================================== */
-/* === ESTILOS PARA BOTONES DE ICONOS === */
-/* ============================================== */
-
+/* Botones de Iconos */
 .icon-button {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   margin: 0;
-  
-  /* Tamaño y alineación */
-  font-size: 1.1rem; /* Tamaño del icono */
+  font-size: 1.1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  
-  /* Transición suave */
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.icon-button:focus, .theme-toggle:focus {
+.icon-button:focus {
   outline: none;
-  box-shadow: none; /* Fallback por si acaso */
+  box-shadow: none;
 }
 
 .icon-button.sort {
-  font-size: 2rem; /* Un poco más grande */
-  margin-left: 4px; /* Pequeño espacio */
+  color: #FFFFFF;
+  font-size: 2rem;
+  margin-left: 4px;
   opacity: 0.8;
 }
 .icon-button.sort:hover {
@@ -219,119 +254,105 @@ body.dark .skeleton {
   transform: scale(1.1);
 }
 
-/* Color y hover para el botón de editar */
-.icon-button.edit, .icon-button.delete, .icon-button.sort {
+.icon-button.edit,
+.icon-button.delete {
   color: var(--icon-color-table);
 }
-.icon-button.edit:hover {
-  color: #000;
-  transform: scale(1.15);
-}
 
+.icon-button.edit:hover,
 .icon-button.delete:hover {
   color: #000;
   transform: scale(1.15);
 }
 
-
-.site-header {
-  position: relative; /* Contenedor para el centrado */
-  margin-bottom: 1rem;
+body.dark .icon-button.edit:hover,
+body.dark .icon-button.delete:hover {
+  color: #fff;
 }
 
-.site-header h1 {
-  text-align: center; /* Centramos el H1 */
-  margin: 0;
-}
-
-.theme-toggle {
-  /* Posicionamiento del botón */
-  position: absolute;
-  right: 0;
-  top: 50%;
-  /* transform: translateY(-50%); */
-
-  /* Estilos del botón */
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 50%; /* Botón redondo */
+/* Wrapper para botones de acción (Desktop) */
+.action-buttons-wrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  gap: 0.75rem;
+  align-items: center;
 }
-
-.theme-toggle:hover {
-  transform: scale(1.1) rotate(15deg);
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-
 
 /* ============================================== */
-/* === DEFINICIÓN DEL TEMA OSCURO === */
+/* === SKELETON (Carga) === */
+/* ============================================== */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.skeleton {
+  width: 100%;
+  height: 1.25rem;
+  border-radius: 4px;
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: #e0e0e0; 
+}
+body.dark .skeleton {
+  background-color: #3a3a3a;
+}
+.skeleton-img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.skeleton-row td:not(:first-child) .skeleton-text { width: 80%; }
+.skeleton-row td:nth-child(3) .skeleton-text,
+.skeleton-row td:nth-child(5) .skeleton-text { width: 60%; }
+
+/* ============================================== */
+/* === ANIMACIÓN DE FILAS (Entrada/Salida) === */
 /* ============================================== */
 
-/* Por defecto (light) */
-body.light {
-  background-color: #F0F2F5; /* Un gris claro */
-  color: #1c1c1c;
-
-  /* --- VARIABLES DE ICONOS (Gris/Blanco) --- */
-  --icon-color-header: #FFFFFF; /* Icono de ordenar (blanco) */
-  --icon-color-table: #4a4a4a; /* Iconos de tabla (gris oscuro) */
-  /* -------------------------------------- */
+.cell-wrapper {
+  transition: opacity 700ms ease-in-out, transform 700ms ease-in-out;
+}
+.pokemon-row-transition-appear .cell-wrapper,
+.pokemon-row-transition-enter .cell-wrapper {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.pokemon-row-transition-appear-active .cell-wrapper,
+.pokemon-row-transition-enter-active .cell-wrapper {
+  opacity: 1;
+  transform: translateX(0);
+}
+.pokemon-row-transition-exit .cell-wrapper {
+  opacity: 1;
+  transform: translateX(0);
+}
+.pokemon-row-transition-exit-active .cell-wrapper {
+  opacity: 0;
+  transform: translateX(100%);
 }
 
-/* Tema oscuro */
-body.dark {
-  background-color: #1a1a1a;
-  color: #eaeaea;
-
-  /* --- VARIABLES DE ICONOS (Gris/Blanco) --- */
-  --icon-color-header: #eaeaea; /* Icono de ordenar (casi blanco) */
-  --icon-color-table: #b0b0b0; /* Iconos de tabla (gris claro) */
-  /* -------------------------------------- */
-}
-
-/* Ajustes para la tabla en modo oscuro */
-body.dark .pokemon-row:hover {
-  background-color: #2c2c2c;
-}
-
-/* Ajuste para la fila condicional (azul) en modo oscuro */
-/* Usamos !important para sobreescribir el estilo en línea de React */
-body.dark .pokemon-row[style*="rgb(127, 174, 227)"] {
-  background-color: #1e3a8a !important; /* Un azul oscuro */
-}
-
-/* Ajuste para los chips en modo oscuro */
-body.dark .type-chip {
-  color: #FFFFFF;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
+/* ============================================== */
+/* === ESTILOS DEL MODAL === */
+/* ============================================== */
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); /* Fondo oscuro */
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Asegura que esté al frente */
+  z-index: 1000;
 }
 
 .modal-content {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra todo */
+  align-items: center;
   justify-content: center;
-  background-color: var(--modal-bg, #FFFFFF);
+  background-color: var(--modal-bg);
   padding: 2rem 3rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -346,19 +367,54 @@ body.dark .type-chip {
 }
 
 .modal-content h2 {
-  margin: 0 0 1rem 0;
+  margin: 0;
   font-size: 1.8rem;
-  color: var(--modal-text, #1c1c1c);
+  color: var(--modal-text);
+}
+
+.modal-nickname {
+  font-size: 1em;
+  color: var(--modal-text);
+  margin: -0.5rem 0 1rem 0;
+  font-style: italic;
+  text-align: center;
+}
+body.dark .modal-nickname {
+  color: var(--modal-text);
 }
 
 .modal-input {
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
   border-radius: 6px;
   text-align: center;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--search-bg);
+  color: var(--search-text);
+  border: 1px solid var(--search-border);
+}
+
+.modal-error {
+  color: #dc3545; /* Rojo */
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-top: 0.75rem;
+  margin-bottom: -0.5rem; /* Reduce el espacio antes de los botones */
+  text-align: center;
+}
+
+/* Estilo para el botón deshabilitado */
+.modal-button.confirm:disabled {
+  background-color: #94d3a2; /* Verde pálido */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.modal-button.confirm:disabled:hover {
+  background-color: #94d3a2; /* Evita el hover */
+  transform: none;
 }
 
 .modal-actions {
@@ -369,7 +425,7 @@ body.dark .type-chip {
 }
 
 .modal-button {
-  flex: 1; /* Ocupan el mismo espacio */
+  flex: 1;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: bold;
@@ -377,39 +433,25 @@ body.dark .type-chip {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: 'Inter', sans-serif;
 }
 .modal-button:active {
   transform: scale(0.98);
 }
-
 .modal-button.confirm {
-  background-color: #28a745; /* Verde */
+  background-color: #28a745;
   color: white;
 }
 .modal-button.confirm:hover {
   background-color: #218838;
 }
-
 .modal-button.cancel {
-  background-color: #e0e0e0; /* Gris */
+  background-color: #e0e0e0;
   color: #333;
 }
 .modal-button.cancel:hover {
   background-color: #c7c7c7;
 }
-
-/* Ajustes del modal para Dark Mode */
-body.dark {
-  --modal-bg: #2c2c2c;
-  --modal-text: #eaeaea;
-}
-
-body.dark .modal-input {
-  background-color: #333;
-  color: #eaeaea;
-  border-color: #555;
-}
-
 body.dark .modal-button.cancel {
   background-color: #4a4a4a;
   color: #eaeaea;
@@ -418,43 +460,7 @@ body.dark .modal-button.cancel:hover {
   background-color: #5a5a5a;
 }
 
-/* ============================================== */
-/* === ESTILOS DEL MODAL === */
-/* ============================================== */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  
-  /* --- CAMBIO: 'transition' ELIMINADO DE LA CLASE BASE --- */
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--modal-bg, #FFFFFF);
-  padding: 2rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  width: 90%;
-  
-  /* --- CAMBIO: 'transition' ELIMINADO DE LA CLASE BASE --- */
-}
-
-/* --- ANIMACIÓN DE TRANSICIÓN DEL MODAL --- */
-
-/* Estado inicial (Entrando Y Apareciendo) */
+/* Animación del Modal */
 .modal-fade-appear,
 .modal-fade-enter {
   opacity: 0;
@@ -464,23 +470,17 @@ body.dark .modal-button.cancel:hover {
   opacity: 0;
   transform: scale(0.95);
 }
-
-/* Estado activo (Entrando Y Apareciendo) */
 .modal-fade-appear-active,
 .modal-fade-enter-active {
   opacity: 1;
-  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
   transition: opacity 300ms ease-in-out;
 }
 .modal-fade-appear-active .modal-content,
 .modal-fade-enter-active .modal-content {
   opacity: 1;
   transform: scale(1);
-  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
-
-/* Estado inicial (Saliendo) */
 .modal-fade-exit {
   opacity: 1;
 }
@@ -488,20 +488,210 @@ body.dark .modal-button.cancel:hover {
   opacity: 1;
   transform: scale(1);
 }
-
-/* Estado activo (Saliendo) */
 .modal-fade-exit-active {
   opacity: 0;
-  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
   transition: opacity 300ms ease-in-out;
 }
 .modal-fade-exit-active .modal-content {
   opacity: 0;
   transform: scale(0.95);
-  /* --- CAMBIO: 'transition' AÑADIDO AQUÍ --- */
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
-/* --- FIN ANIMACIÓN --- */
 
+/* ============================================== */
+/* === RESPONSIVIDAD (Media Queries) === */
+/* ============================================== */
 
-/* ... (El resto de tus estilos .modal-image, .modal-input, etc.) ... */
+/* --- MÓVIL (1023px o menos) --- */
+@media (max-width: 1023px) {
+  /* 1. Activa el scroll horizontal */
+  .table-container {
+    overflow-x: auto; /* <-- CORRECTO */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 2. Colapsa bordes y layout 'auto' */
+  table {
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  /* 3. Evita que el texto se parta */
+  .pokedex-header th,
+  .pokemon-row td {
+    white-space: nowrap;
+    padding: 12px 15px;
+  }
+
+  /* 4. Agrandar Input y Botones en Móvil */
+  .dynamic-field-input {
+    padding: 10px 8px;
+    font-size: 1rem;
+    min-width: 150px;
+  }
+  .action-buttons-wrapper {
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .icon-button.edit,
+  .icon-button.delete {
+    font-size: 1.3rem;
+    padding: 8px;
+    border-radius: 6px;
+    width: 80%;
+    border: 1px solid var(--icon-color-table);
+  }
+  body.dark .icon-button.edit,
+  body.dark .icon-button.delete {
+    border-color: var(--icon-color-table);
+  }
+  
+  /* 5. LÓGICA DE Z-INDEX */
+  .pokedex-header th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .pokedex-header th:nth-child(n+3),
+  .pokemon-row td:nth-child(n+3) {
+    z-index: 1;
+  }
+  .pokedex-header th:nth-child(1),
+  .pokemon-row td:nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    width: 70px;
+  }
+  .pokedex-header th:nth-child(2),
+  .pokemon-row td:nth-child(2) {
+    position: sticky;
+    left: 70px;
+    z-index: 2;
+  }
+  .pokedex-header th:nth-child(1),
+  .pokedex-header th:nth-child(2) {
+    z-index: 11;
+  }
+
+  /* 6. Fondo y Sombra */
+  .pokemon-row td:nth-child(1),
+  .pokemon-row td:nth-child(2) {
+    background: inherit;
+  }
+  .pokedex-header th:nth-child(1),
+  .pokedex-header th:nth-child(2) {
+    background-color: var(--header-color, #DB3535);
+  }
+  .pokedex-header th:nth-child(2),
+  .pokemon-row td:nth-child(2) {
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* --- ESCRITORIO (1024px o más) --- */
+@media (min-width: 1024px) {
+  /* 0. Aplicamos el overflow: hidden SÓLO en desktop */
+  .table-container {
+    overflow: hidden; /* <-- CORRECTO */
+  }
+
+  /* 1. Centra el contenedor */
+  .app-container {
+    width: 60vw;
+    margin: 0 auto;
+    padding-top: 2rem;
+  }
+
+  /* 2. Activa bordes separados y ancho 100% */
+  table {
+    border-collapse: separate;
+    width: 100%;
+    table-layout: auto;
+  }
+
+  /* 3. Devuelve las esquinas redondeadas */
+  .pokedex-header th:first-child {
+    border-top-left-radius: 8px;
+  }
+  .pokedex-header th:last-child {
+    border-top-right-radius: 8px;
+  }
+  
+  /* 4. Resetea los estilos de móvil */
+  .pokedex-header th, .pokemon-row td {
+    width: auto;
+    z-index: auto;
+    min-width: auto;
+    white-space: normal;
+  }
+
+  /* 5. Header Desktop */
+  .site-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo-container {
+    justify-content: flex-start;
+  }
+  .theme-toggle {
+    position: static;
+    margin: 0;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  .theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .header-bottom-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .search-bar-container {
+    width: 40%;
+    min-width: 300px;
+  }
+
+  /* 6. Reseteo Botones/Inputs móvil */
+  .dynamic-field-input {
+    padding: 4px 6px;
+    font-size: inherit;
+  }
+  .icon-button.edit,
+  .icon-button.delete {
+    padding: 0;
+    border: none;
+    width: auto;
+  }
+}
+
+.icon-button:focus-visible,
+.theme-toggle:focus-visible,
+.search-input:focus-visible,
+.dynamic-field-input:focus-visible,
+.modal-button:focus-visible,
+.modal-input:focus-visible {
+  outline: none;
+  /* Un anillo de foco azul */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.7);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
