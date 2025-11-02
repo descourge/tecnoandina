@@ -73,8 +73,6 @@ const PokedexPage: React.FC = () => {
       </header>
       
       <main role="main">
-        {/* (Restauré el <p> que estaba en el código anterior) */}
-        <p>Explora la lista de Pokémon.</p>
         
         {/* --- 6. APLICAR EL CAMBIO --- */}
         <div ref={tableTriggerRef}>

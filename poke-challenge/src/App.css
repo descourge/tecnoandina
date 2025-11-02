@@ -278,6 +278,33 @@ body.dark .icon-button.delete:hover {
   align-items: center;
 }
 
+.table-footer {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.table-footer .footer-count {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #6A7282; /* Color de texto principal */
+  margin: 0;
+}
+
+.table-footer .footer-divider {
+  border: none;
+  border-top: 1px solid var(--search-border); /* Color del borde del tema */
+  margin: 1rem auto;
+  width: 80%;
+}
+
+.table-footer .footer-info {
+  font-size: 0.85rem;
+  color: #6A7282; /* Color de texto secundario */
+  margin: 0.25rem 0;
+  line-height: 1.4;
+}
+
 /* ============================================== */
 /* === SKELETON (Carga) === */
 /* ============================================== */

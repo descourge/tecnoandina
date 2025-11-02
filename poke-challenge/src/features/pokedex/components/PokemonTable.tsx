@@ -12,7 +12,7 @@ import {
 } from 'react-icons/ai';
 import { PokemonTableSkeleton } from './PokemonTableSkeleton';
 
-// --- CAMBIO 1: Quitamos 'export' de esta línea ---
+// Quitamos 'export' de aquí
 const PokemonTable = () => {
   // 1. Hooks (Query y Store)
   const { data: allPokemon, isLoading, error } = usePokemonList();
@@ -149,9 +149,27 @@ const PokemonTable = () => {
           </TransitionGroup>
         </table>
       </div>
+
+      {/* --- NUEVO FOOTER --- */}
+      <footer className="table-footer">
+        <p className="footer-count">
+          Mostrando <strong>{sortedPokemon.length}</strong> Pokémon
+        </p>
+        
+        <hr className="footer-divider" />
+        
+        <p className="footer-info">
+          Datos proporcionados por PokéAPI · Imágenes oficiales de Pokémon Company
+        </p>
+        <p className="footer-info">
+          Pulsa una fila para cambiar el color del encabezado · Los nombres que terminan antes de 'm' están resaltados
+        </p>
+      </footer>
+      {/* --- FIN DEL FOOTER --- */}
+      
     </div>
   );
 };
 
-// --- CAMBIO 2: Añadimos el 'export default' al final ---
+// Añadimos el export default al final
 export default PokemonTable;
