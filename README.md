@@ -24,7 +24,8 @@ El presente proyecto es un trabajo realizado utilizando React + Vite escrito en 
 * 🔍 Barra de búsqueda que permite filtrar por Nombre o Tipo(s).
 * 🔢 Al final de la tabla hay un contador de la cantidad de filas que se están mostrando.
 * ⏳ Lazy Skeleton al entrar al sitio antes de que se haga el fetch a la API.
-* ☀️/🌙 **Adicional:** Se implementó un botón para cambiar entre la versión Light y Dark del sitio, representados con un Solrock y Lunatone respectivamente, para encajar en la temática. Existe una animación en el :hover sólo para versión Desktop.![ThemeToggle](https://i.imgur.com/Ud3FShy.png)
+* ☀️/🌙 **Adicional:** Se implementó un botón para cambiar entre la versión Light y Dark del sitio, representados con un Solrock y Lunatone respectivamente, para encajar en la temática. Existe una animación en el :hover sólo para versión Desktop.
+![ThemeToggle](https://i.imgur.com/Ud3FShy.png)
 * 📱/🖥️ **Responsividad:** Para mostrar la información de forma más cómoda en la versión móvil, se implementó una tabla híbrida donde las primeras 2 columnas (Imagen y Nombre) son estáticas, mientras que el resto de las columnas permiten un scroll horizontal para no perder de vista el Pokémon al que corresponde la información.
 
 ## 🛠️ Tecnologías utilizadas:
