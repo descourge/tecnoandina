@@ -3,7 +3,6 @@ import { usePokemonStore } from '../store/pokedexStore';
 import { CSSTransition } from 'react-transition-group';
 import { FocusTrap } from 'focus-trap-react';
 
-// Función helper
 const capitalize = (str: string): string => {
   if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -18,17 +17,18 @@ export const EditModal: React.FC = () => {
   } = usePokemonStore();
   
   const [newName, setNewName] = useState('');
-  const [error, setError] = useState<string | null>(null); // <-- NUEVO ESTADO
-  const nodeRef = useRef(null);
+  const [error, setError] = useState<string | null>(null);
+  const overlayRef = useRef(null);
+  
+  const [isTrapActive, setIsTrapActive] = useState(false);
 
   useEffect(() => {
     if (editingPokemon) {
       setNewName(editingPokemon.name);
-      setError(null); // Reseteamos el error al abrir
+      setError(null);
     }
   }, [editingPokemon]);
 
-  // (useEffect de 'Escape' sin cambios)
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -41,17 +41,13 @@ export const EditModal: React.FC = () => {
     };
   }, [closeEditModal]);
 
-  // --- LÓGICA DE VALIDACIÓN ---
   const isInvalid = newName.trim() === '';
 
   const handleConfirm = () => {
-    // Si es inválido, muestra error
     if (isInvalid) {
       setError('El nombre no puede estar vacío.');
       return;
     }
-    
-    // Si es válido, procede
     if (editingPokemon) {
       editPokemonName(editingPokemon.id, newName.trim());
       closeEditModal();
@@ -72,11 +68,17 @@ export const EditModal: React.FC = () => {
       timeout={300}
       classNames="modal-fade"
       unmountOnExit
-      nodeRef={nodeRef}
+      nodeRef={overlayRef}
       appear
+      onEntered={() => setIsTrapActive(true)}
+      onExiting={() => setIsTrapActive(false)}
     >
-      <FocusTrap active={!!editingPokemon}>
-        <div className="modal-overlay" ref={nodeRef} onClick={closeEditModal}>
+      <div 
+        className="modal-overlay" 
+        ref={overlayRef} 
+        onClick={closeEditModal}
+      >
+        <FocusTrap active={isTrapActive}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
@@ -105,18 +107,16 @@ export const EditModal: React.FC = () => {
                   type="text"
                   className="modal-input"
                   value={newName}
-                  // --- CAMBIO: Limpiamos el error al escribir ---
                   onChange={(e) => {
                     setNewName(e.target.value);
                     if (error) setError(null);
                   }}
                   onKeyDown={handleKeyDown}
                   autoFocus
-                  aria-invalid={!!error} // Accesibilidad: anuncia que el campo es inválido
-                  aria-describedby="modal-error-msg" // Vincula al mensaje de error
+                  aria-invalid={!!error}
+                  aria-describedby="modal-error-msg"
                 />
 
-                {/* --- NUEVO: Mensaje de error --- */}
                 {error && (
                   <p id="modal-error-msg" className="modal-error">
                     {error}
@@ -127,7 +127,7 @@ export const EditModal: React.FC = () => {
                   <button 
                     className="modal-button confirm" 
                     onClick={handleConfirm}
-                    disabled={isInvalid} // <-- Deshabilitado si es inválido
+                    disabled={isInvalid}
                   >
                     Confirmar
                   </button>
@@ -139,8 +139,8 @@ export const EditModal: React.FC = () => {
             )}
 
           </div>
-        </div>
-      </FocusTrap>
+        </FocusTrap>
+      </div>
     </CSSTransition>
   );
 };

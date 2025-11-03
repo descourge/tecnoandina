@@ -1,8 +1,4 @@
 import React from 'react';
-
-/**
- * Una sola fila falsa (skeleton)
- */
 const SkeletonRow: React.FC = () => (
   <tr className="skeleton-row">
     <td><div className="skeleton skeleton-img"></div></td>
@@ -15,14 +11,9 @@ const SkeletonRow: React.FC = () => (
     <td><div className="skeleton skeleton-text"></div></td>
   </tr>
 );
-
-/**
- * El componente de la tabla skeleton completa
- */
 export const PokemonTableSkeleton: React.FC = () => {
   return (
     <table>
-      {/* Reusamos el mismo header de la tabla real */}
       <thead
         className="pokedex-header"
         style={
@@ -43,7 +34,6 @@ export const PokemonTableSkeleton: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {/* Creamos 10 filas falsas para llenar la vista */}
         {Array(10)
           .fill(0)
           .map((_, index) => (

@@ -1,11 +1,4 @@
-/* ============================================== */
-/* === IMPORTACIÓN DE FUENTE === */
-/* ============================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-
-/* ============================================== */
-/* === DEFINICIÓN DEL TEMA (Variables) === */
-/* ============================================== */
 
 /* Por defecto (light) */
 body.light {
@@ -37,17 +30,9 @@ body.dark {
   --search-border: #555;
 }
 
-/* ============================================== */
-/* === ESTILOS GLOBALES Y FUENTE === */
-/* ============================================== */
-
 body {
   font-family: 'Inter', sans-serif;
 }
-
-/* ============================================== */
-/* === ESTILOS DEL HEADER === */
-/* ============================================== */
 
 /* Layout Móvil (Default) */
 .site-header {
@@ -130,15 +115,8 @@ body {
 
 .table-container {
   width: 100%;
-  
-  box-shadow: 0px 0px 8px 0px #0C0C0D0D, 
-              0px 0px 24px 0px #0C0C0D1A;
-  
+  box-shadow: 0px 0px 8px 0px #0C0C0D0D, 0px 0px 24px 0px #0C0C0D1A;
   border-radius: 8px;
-  
-  /* --- CORRECCIÓN --- */
-  /* 'overflow' se definirá en las media queries */
-  /* ------------------ */
 }
 
 table {
@@ -287,20 +265,20 @@ body.dark .icon-button.delete:hover {
 .table-footer .footer-count {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #6A7282; /* Color de texto principal */
+  color: #6A7282;
   margin: 0;
 }
 
 .table-footer .footer-divider {
   border: none;
-  border-top: 1px solid var(--search-border); /* Color del borde del tema */
+  border-top: 1px solid var(--search-border);
   margin: 1rem auto;
   width: 80%;
 }
 
 .table-footer .footer-info {
   font-size: 0.85rem;
-  color: #6A7282; /* Color de texto secundario */
+  color: #6A7282;
   margin: 0.25rem 0;
   line-height: 1.4;
 }
@@ -424,11 +402,11 @@ body.dark .modal-nickname {
 }
 
 .modal-error {
-  color: #dc3545; /* Rojo */
+  color: #dc3545;
   font-size: 0.9em;
   font-weight: bold;
   margin-top: 0.75rem;
-  margin-bottom: -0.5rem; /* Reduce el espacio antes de los botones */
+  margin-bottom: -0.5rem;
   text-align: center;
 }
 
@@ -531,26 +509,22 @@ body.dark .modal-button.cancel:hover {
 
 /* --- MÓVIL (1023px o menos) --- */
 @media (max-width: 1023px) {
-  /* 1. Activa el scroll horizontal */
   .table-container {
-    overflow-x: auto; /* <-- CORRECTO */
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* 2. Colapsa bordes y layout 'auto' */
   table {
     border-collapse: collapse;
     table-layout: auto;
   }
 
-  /* 3. Evita que el texto se parta */
   .pokedex-header th,
   .pokemon-row td {
     white-space: nowrap;
     padding: 12px 15px;
   }
 
-  /* 4. Agrandar Input y Botones en Móvil */
   .dynamic-field-input {
     padding: 10px 8px;
     font-size: 1rem;
@@ -574,7 +548,6 @@ body.dark .modal-button.cancel:hover {
     border-color: var(--icon-color-table);
   }
   
-  /* 5. LÓGICA DE Z-INDEX */
   .pokedex-header th {
     position: sticky;
     top: 0;
@@ -602,7 +575,6 @@ body.dark .modal-button.cancel:hover {
     z-index: 11;
   }
 
-  /* 6. Fondo y Sombra */
   .pokemon-row td:nth-child(1),
   .pokemon-row td:nth-child(2) {
     background: inherit;
@@ -619,26 +591,22 @@ body.dark .modal-button.cancel:hover {
 
 /* --- ESCRITORIO (1024px o más) --- */
 @media (min-width: 1024px) {
-  /* 0. Aplicamos el overflow: hidden SÓLO en desktop */
   .table-container {
-    overflow: hidden; /* <-- CORRECTO */
+    overflow: hidden;
   }
 
-  /* 1. Centra el contenedor */
   .app-container {
     width: 60vw;
     margin: 0 auto;
     padding-top: 2rem;
   }
 
-  /* 2. Activa bordes separados y ancho 100% */
   table {
     border-collapse: separate;
     width: 100%;
     table-layout: auto;
   }
 
-  /* 3. Devuelve las esquinas redondeadas */
   .pokedex-header th:first-child {
     border-top-left-radius: 8px;
   }
@@ -646,7 +614,6 @@ body.dark .modal-button.cancel:hover {
     border-top-right-radius: 8px;
   }
   
-  /* 4. Resetea los estilos de móvil */
   .pokedex-header th, .pokemon-row td {
     width: auto;
     z-index: auto;
@@ -654,7 +621,6 @@ body.dark .modal-button.cancel:hover {
     white-space: normal;
   }
 
-  /* 5. Header Desktop */
   .site-header {
     flex-direction: column;
     align-items: stretch;
@@ -687,7 +653,6 @@ body.dark .modal-button.cancel:hover {
     min-width: 300px;
   }
 
-  /* 6. Reseteo Botones/Inputs móvil */
   .dynamic-field-input {
     padding: 4px 6px;
     font-size: inherit;

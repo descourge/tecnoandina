@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { type Pokemon } from '../api/pokemonApi';
 
-// Define el tipo para el estado
 interface PokemonState {
   // Estado de la UI
   pokemonList: Pokemon[];
@@ -10,9 +9,8 @@ interface PokemonState {
   sortOrder: 'asc' | 'desc';
   theme: 'light' | 'dark';
   editingPokemon: Pokemon | null;
-  searchQuery: string; // <-- NUEVO ESTADO
+  searchQuery: string;
 
-  // Estado persistido
   dynamicFields: Record<number, string>;
 
   // Acciones
@@ -22,28 +20,27 @@ interface PokemonState {
   toggleTheme: () => void;
   openEditModal: (pokemon: Pokemon) => void;
   closeEditModal: () => void;
-  setSearchQuery: (query: string) => void; // <-- NUEVA ACCIÓN
+  setSearchQuery: (query: string) => void;
   
   // Acciones para la tabla
   deletePokemon: (pokemonId: number) => void;
   editPokemonName: (pokemonId: number, newName: string) => void;
   
-  // Acciones para el campo dinámico
+  // Acción para el campo dinámico
   setDynamicField: (pokemonId: number, value: string) => void;
 }
 
-// Creamos el store
+// Store
 export const usePokemonStore = create<PokemonState>()(
   persist(
     (set) => ({
-      // --- Valores por defecto ---
       pokemonList: [],
       selectedColor: null,
       sortOrder: 'asc',
       dynamicFields: {},
       theme: 'light',
       editingPokemon: null,
-      searchQuery: '', // <-- VALOR INICIAL
+      searchQuery: '',
 
       // --- Acciones ---
       setPokemonList: (pokemon) => set({ pokemonList: pokemon }),
@@ -60,7 +57,6 @@ export const usePokemonStore = create<PokemonState>()(
       openEditModal: (pokemon) => set({ editingPokemon: pokemon }),
       closeEditModal: () => set({ editingPokemon: null }),
 
-      // --- NUEVA ACCIÓN IMPLEMENTADA ---
       setSearchQuery: (query) => set({ searchQuery: query }),
 
       deletePokemon: (pokemonId) =>

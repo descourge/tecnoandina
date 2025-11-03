@@ -2,26 +2,20 @@ import React, {
   useEffect, 
   useRef, 
   useState, 
-  Suspense, // <-- 1. Importar Suspense
-  lazy      // <-- 2. Importar lazy
+  Suspense,
+  lazy
 } from 'react';
 
-// --- 3. Rutas correctas (las que tú tenías) ---
 import { PokemonTableSkeleton } from './components/PokemonTableSkeleton';
-// import { PokemonTable } from './components/PokemonTable'; // <-- 4. Comentar la importación directa
 import { ThemeToggle } from './components/ThemeToggle';
 import { EditModal } from './components/EditModal';
 import { SearchBar } from './components/SearchBar';
 import { usePokemonStore } from './store/pokedexStore';
 
-// --- 5. CREAR la importación "lazy" con la ruta correcta ---
 const PokemonTable = lazy(() => import('./components/PokemonTable'));
-// ------------------------------------
 
 const PokedexPage: React.FC = () => {
   const theme = usePokemonStore((state) => state.theme);
-  
-  // Lógica de Lazy Loading (sin cambios)
   const [isTableVisible, setIsTableVisible] = useState(false);
   const tableTriggerRef = useRef<HTMLDivElement>(null);
   
@@ -47,7 +41,6 @@ const PokedexPage: React.FC = () => {
     };
   }, []);
   
-  // Effect para el tema (sin cambios)
   useEffect(() => {
     document.body.classList.remove('light', 'dark');
     document.body.classList.add(theme);
@@ -74,21 +67,15 @@ const PokedexPage: React.FC = () => {
       
       <main role="main">
         
-        {/* --- 6. APLICAR EL CAMBIO --- */}
         <div ref={tableTriggerRef}>
-          {/*
-            Suspense mostrará el 'fallback' (el skeleton)
-            mientras el código de PokemonTable.tsx se descarga.
-          */}
           <Suspense fallback={<PokemonTableSkeleton />}>
             {isTableVisible ? (
-              <PokemonTable /> // <-- Ahora es cargado perezosamente
+              <PokemonTable />
             ) : (
               <PokemonTableSkeleton />
             )}
           </Suspense>
         </div>
-        {/* --- FIN DEL CAMBIO --- */}
         
       </main>
       

@@ -1,10 +1,9 @@
-import React from 'react'; // <-- Quitamos useState
+import React from 'react';
 import { type Pokemon } from '../api/pokemonApi';
 import { usePokemonStore } from '../store/pokedexStore';
 import {
   AiOutlineEdit,
   AiOutlineDelete,
-  AiOutlineSave, // <-- Ya no necesitamos AiOutlineSave
 } from 'react-icons/ai';
 
 interface PokemonRowProps {
@@ -20,18 +19,14 @@ export const PokemonRow = React.forwardRef<
   HTMLTableRowElement,
   PokemonRowProps
 >(({ pokemon }, ref) => {
-  // --- Quitamos isEditing y editPokemonName de aquí ---
   const {
     setSelectedColor,
     deletePokemon,
     dynamicFields,
     setDynamicField,
-    openEditModal, // <-- AÑADIMOS ESTO
+    openEditModal,
   } = usePokemonStore();
 
-  // --- Quitamos el estado local [isEditing, setIsEditing] ---
-
-  // 1. Handlers
   const handleRowClick = () => setSelectedColor(pokemon.color);
   
   const handleDeleteClick = (e: React.MouseEvent) => {
@@ -39,10 +34,9 @@ export const PokemonRow = React.forwardRef<
     deletePokemon(pokemon.id);
   };
 
-  // --- CAMBIAMOS EL HANDLER DE EDITAR ---
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    openEditModal(pokemon); // <-- Solo abre el modal
+    openEditModal(pokemon);
   };
 
   const handleDynamicFieldChange = (
@@ -51,7 +45,6 @@ export const PokemonRow = React.forwardRef<
     setDynamicField(pokemon.id, e.target.value);
   };
 
-  // 2. Lógica de Estilo (sin cambios)
   const lastLetter = pokemon.name.toLowerCase().slice(-1);
   const rowStyle =
     lastLetter < 'm'
@@ -59,7 +52,6 @@ export const PokemonRow = React.forwardRef<
       : {};
   const dynamicFieldValue = dynamicFields[pokemon.id] ?? '';
 
-  // 3. Renderizado
   return (
     <tr
       ref={ref}
@@ -77,15 +69,11 @@ export const PokemonRow = React.forwardRef<
           />
         </div>
       </td>
-
-      {/* --- CAMBIO: Celda "Nombre" (Simplificada) --- */}
       <td>
         <div className="cell-wrapper">
-          {/* Ya no hay condicional, solo el span */}
           <span>{capitalize(pokemon.name)}</span>
         </div>
       </td>
-      {/* --- FIN CAMBIO --- */}
 
       <td>
         <div className="cell-wrapper">
@@ -128,15 +116,13 @@ export const PokemonRow = React.forwardRef<
       </td>
       <td>
         <div className="cell-wrapper action-buttons-wrapper">
-          {/* --- CAMBIO: Botón de Editar (Simplificado) --- */}
           <button
             className="icon-button edit"
             onClick={handleEditClick}
             aria-label="Editar"
           >
-            <AiOutlineEdit /> {/* Ya no cambia a "Guardar" */}
+            <AiOutlineEdit />
           </button>
-          {/* --- FIN CAMBIO --- */}
           <button
             className="icon-button delete"
             onClick={handleDeleteClick}
